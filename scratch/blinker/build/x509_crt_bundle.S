@@ -1,4 +1,4 @@
-/* * Data converted from /home/akilax0/Documents/e17-3yp-Landmine-Detector/hardware/ESP32_test_scripts/scratch/blinker/build/esp-idf/mbedtls/x509_crt_bundle
+/* * Data converted from /home/akilax0/Documents/ESP32_scripts/scratch/blinker/build/esp-idf/mbedtls/x509_crt_bundle
  */
 .data
 .section .rodata.embedded

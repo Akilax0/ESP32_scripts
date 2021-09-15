@@ -1362,36 +1362,6 @@
                         "name": "ESPTOOLPY_FLASH_VENDOR",
                         "title": "Select OPI Flash Vendor",
                         "type": "choice"
-                    },
-                    {
-                        "children": [
-                            {
-                                "children": [],
-                                "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
-                                "help": null,
-                                "id": "ESPTOOLPY_FLASHMODE_OPI_STR",
-                                "name": "ESPTOOLPY_FLASHMODE_OPI_STR",
-                                "range": null,
-                                "title": "OPI_STR",
-                                "type": "bool"
-                            },
-                            {
-                                "children": [],
-                                "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
-                                "help": null,
-                                "id": "ESPTOOLPY_FLASHMODE_OPI_DTR",
-                                "name": "ESPTOOLPY_FLASHMODE_OPI_DTR",
-                                "range": null,
-                                "title": "OPI_DTR",
-                                "type": "bool"
-                            }
-                        ],
-                        "depends_on": "ESPTOOLPY_OCT_FLASH",
-                        "help": null,
-                        "id": "serial-flasher-config-enable-octal-flash-flash-opi-mode",
-                        "name": "ESPTOOLPY_FLASHMODE_OCT",
-                        "title": "Flash OPI mode",
-                        "type": "choice"
                     }
                 ],
                 "depends_on": "IDF_TARGET_ESP32S3",
@@ -1406,7 +1376,7 @@
                 "children": [
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_QIO",
                         "name": "ESPTOOLPY_FLASHMODE_QIO",
@@ -1416,7 +1386,7 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_QOUT",
                         "name": "ESPTOOLPY_FLASHMODE_QOUT",
@@ -1426,7 +1396,7 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_DIO",
                         "name": "ESPTOOLPY_FLASHMODE_DIO",
@@ -1436,12 +1406,22 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_DOUT",
                         "name": "ESPTOOLPY_FLASHMODE_DOUT",
                         "range": null,
                         "title": "DOUT",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI",
+                        "range": null,
+                        "title": "OPI",
                         "type": "bool"
                     }
                 ],
@@ -1450,6 +1430,36 @@
                 "id": "serial-flasher-config-flash-spi-mode",
                 "name": "ESPTOOLPY_FLASHMODE",
                 "title": "Flash SPI mode",
+                "type": "choice"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI_STR",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI_STR",
+                        "range": null,
+                        "title": "OPI_STR",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI_DTR",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI_DTR",
+                        "range": null,
+                        "title": "OPI_DTR",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "ESPTOOLPY_FLASHMODE_OPI",
+                "help": null,
+                "id": "serial-flasher-config-flash-opi-mode",
+                "name": "ESPTOOLPY_FLASHMODE_OCT",
+                "title": "Flash OPI mode",
                 "type": "choice"
             },
             {
@@ -5523,6 +5533,16 @@
                                 "name": "SPI_FLASH_SUPPORT_BOYA_CHIP",
                                 "range": null,
                                 "title": "BOYA",
+                                "type": "bool"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": "IDF_TARGET_ESP32S3",
+                                "help": "Enable this to support auto detection of Octal MXIC chips if chip vendor not directly\ngiven by ``chip_drv`` member of the chip struct. This adds support for variant\nchips, however will extend detecting time.",
+                                "id": "SPI_FLASH_SUPPORT_MXIC_OPI_CHIP",
+                                "name": "SPI_FLASH_SUPPORT_MXIC_OPI_CHIP",
+                                "range": null,
+                                "title": "mxic (opi)",
                                 "type": "bool"
                             }
                         ],

@@ -299,7 +299,7 @@ rule C_STATIC_LIBRARY_LINKER____idf_main_
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /usr/bin/cmake --regenerate-during-build -S/home/akilax0/esp/esp-idf/components/bootloader/subproject -B/home/akilax0/Documents/e17-3yp-Landmine-Detector/hardware/ESP32_test_scripts/scratch/blinker/build/bootloader
+  command = /usr/bin/cmake --regenerate-during-build -S/home/akilax0/esp/esp-idf/components/bootloader/subproject -B/home/akilax0/Documents/ESP32_scripts/scratch/blinker/build/bootloader
   description = Re-running CMake...
   generator = 1
 

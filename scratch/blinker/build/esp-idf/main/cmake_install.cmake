@@ -1,4 +1,4 @@
-# Install script for directory: /home/akilax0/Documents/e17-3yp-Landmine-Detector/hardware/ESP32_test_scripts/scratch/blinker/main
+# Install script for directory: /home/akilax0/Documents/ESP32_scripts/scratch/blinker/main
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

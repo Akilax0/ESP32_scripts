@@ -1434,36 +1434,6 @@
                         "name": "ESPTOOLPY_FLASH_VENDOR",
                         "title": "Select OPI Flash Vendor",
                         "type": "choice"
-                    },
-                    {
-                        "children": [
-                            {
-                                "children": [],
-                                "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
-                                "help": null,
-                                "id": "ESPTOOLPY_FLASHMODE_OPI_STR",
-                                "name": "ESPTOOLPY_FLASHMODE_OPI_STR",
-                                "range": null,
-                                "title": "OPI_STR",
-                                "type": "bool"
-                            },
-                            {
-                                "children": [],
-                                "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
-                                "help": null,
-                                "id": "ESPTOOLPY_FLASHMODE_OPI_DTR",
-                                "name": "ESPTOOLPY_FLASHMODE_OPI_DTR",
-                                "range": null,
-                                "title": "OPI_DTR",
-                                "type": "bool"
-                            }
-                        ],
-                        "depends_on": "ESPTOOLPY_OCT_FLASH",
-                        "help": null,
-                        "id": "serial-flasher-config-enable-octal-flash-flash-opi-mode",
-                        "name": "ESPTOOLPY_FLASHMODE_OCT",
-                        "title": "Flash OPI mode",
-                        "type": "choice"
                     }
                 ],
                 "depends_on": "IDF_TARGET_ESP32S3",
@@ -1478,7 +1448,7 @@
                 "children": [
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_QIO",
                         "name": "ESPTOOLPY_FLASHMODE_QIO",
@@ -1488,7 +1458,7 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_QOUT",
                         "name": "ESPTOOLPY_FLASHMODE_QOUT",
@@ -1498,7 +1468,7 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_DIO",
                         "name": "ESPTOOLPY_FLASHMODE_DIO",
@@ -1508,12 +1478,22 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "<choice ESPTOOLPY_FLASHMODE>",
+                        "depends_on": "!ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
                         "help": null,
                         "id": "ESPTOOLPY_FLASHMODE_DOUT",
                         "name": "ESPTOOLPY_FLASHMODE_DOUT",
                         "range": null,
                         "title": "DOUT",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_OCT_FLASH && <choice ESPTOOLPY_FLASHMODE>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI",
+                        "range": null,
+                        "title": "OPI",
                         "type": "bool"
                     }
                 ],
@@ -1522,6 +1502,36 @@
                 "id": "serial-flasher-config-flash-spi-mode",
                 "name": "ESPTOOLPY_FLASHMODE",
                 "title": "Flash SPI mode",
+                "type": "choice"
+            },
+            {
+                "children": [
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI_STR",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI_STR",
+                        "range": null,
+                        "title": "OPI_STR",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "ESPTOOLPY_FLASH_VENDOR_MXIC && <choice ESPTOOLPY_FLASHMODE_OCT>",
+                        "help": null,
+                        "id": "ESPTOOLPY_FLASHMODE_OPI_DTR",
+                        "name": "ESPTOOLPY_FLASHMODE_OPI_DTR",
+                        "range": null,
+                        "title": "OPI_DTR",
+                        "type": "bool"
+                    }
+                ],
+                "depends_on": "ESPTOOLPY_FLASHMODE_OPI",
+                "help": null,
+                "id": "serial-flasher-config-flash-opi-mode",
+                "name": "ESPTOOLPY_FLASHMODE_OCT",
+                "title": "Flash OPI mode",
                 "type": "choice"
             },
             {
@@ -5095,13 +5105,44 @@
                                 "type": "bool"
                             },
                             {
-                                "children": [],
+                                "children": [
+                                    {
+                                        "children": [
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice BT_HID_ROLE>",
+                                                "help": "This enables the BT HID Host",
+                                                "id": "BT_HID_HOST_ENABLED",
+                                                "name": "BT_HID_HOST_ENABLED",
+                                                "range": null,
+                                                "title": "Classic BT HID Host",
+                                                "type": "bool"
+                                            },
+                                            {
+                                                "children": [],
+                                                "depends_on": "<choice BT_HID_ROLE>",
+                                                "help": "This enables the BT HID Device",
+                                                "id": "BT_HID_DEVICE_ENABLED",
+                                                "name": "BT_HID_DEVICE_ENABLED",
+                                                "range": null,
+                                                "title": "Classic BT HID Device",
+                                                "type": "bool"
+                                            }
+                                        ],
+                                        "depends_on": "BT_HID_ENABLED",
+                                        "help": null,
+                                        "id": "component-config-bluetooth-bluedroid-options-classic-bt-hid-profile-role-configuration",
+                                        "name": "BT_HID_ROLE",
+                                        "title": "Profile Role configuration",
+                                        "type": "choice"
+                                    }
+                                ],
                                 "depends_on": "BT_CLASSIC_ENABLED",
                                 "help": "This enables the BT HID Host",
-                                "id": "BT_HID_HOST_ENABLED",
-                                "name": "BT_HID_HOST_ENABLED",
+                                "id": "BT_HID_ENABLED",
+                                "name": "BT_HID_ENABLED",
                                 "range": null,
-                                "title": "Classic BT HID Host",
+                                "title": "Classic BT HID",
                                 "type": "bool"
                             },
                             {
@@ -9996,7 +10037,7 @@
                     },
                     {
                         "children": [],
-                        "depends_on": "(IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32H2) && ESP_TLS_USING_MBEDTLS",
+                        "depends_on": "(IDF_TARGET_ESP32C3 || IDF_TARGET_ESP32S2 || IDF_TARGET_ESP32H2 || IDF_TARGET_ESP32S3) && ESP_TLS_USING_MBEDTLS",
                         "help": "Enable use of the Digital Signature Peripheral for ESP-TLS.The DS peripheral\ncan only be used when it is appropriately configured for TLS.\nConsult the ESP-TLS documentation in ESP-IDF Programming Guide for more details.",
                         "id": "ESP_TLS_USE_DS_PERIPHERAL",
                         "name": "ESP_TLS_USE_DS_PERIPHERAL",
@@ -12044,36 +12085,6 @@
                 "children": [
                     {
                         "children": [
-                            {
-                                "children": [
-                                    {
-                                        "children": [],
-                                        "depends_on": "<choice LCD_PERIPH_CLK_SRC>",
-                                        "help": null,
-                                        "id": "LCD_PERIPH_CLK_SRC_PLL160M",
-                                        "name": "LCD_PERIPH_CLK_SRC_PLL160M",
-                                        "range": null,
-                                        "title": "PLL_160M clock",
-                                        "type": "bool"
-                                    },
-                                    {
-                                        "children": [],
-                                        "depends_on": "<choice LCD_PERIPH_CLK_SRC>",
-                                        "help": null,
-                                        "id": "LCD_PERIPH_CLK_SRC_XTAL",
-                                        "name": "LCD_PERIPH_CLK_SRC_XTAL",
-                                        "range": null,
-                                        "title": "XTAL clock",
-                                        "type": "bool"
-                                    }
-                                ],
-                                "depends_on": null,
-                                "help": "The peripheral clock is where LCD bus clock derives from.\nEach clock source has its unique feature, e.g.\n1. XTAL clock can help LCD work stable when DFS is enabled\n2. PLL160M can achieve higher pixel clock resolution",
-                                "id": "component-config-lcd-and-touch-panel-lcd-peripheral-configuration-select-clock-source-for-lcd-peripheral",
-                                "name": "LCD_PERIPH_CLK_SRC",
-                                "title": "Select clock source for LCD peripheral",
-                                "type": "choice"
-                            },
                             {
                                 "children": [],
                                 "depends_on": null,
@@ -15904,16 +15915,6 @@
                                 "range": null,
                                 "title": "Enable IPv6 forwarding between interfaces",
                                 "type": "bool"
-                            },
-                            {
-                                "children": [],
-                                "depends_on": "LWIP_IPV6",
-                                "help": "Use IPv6 Router Advertisement Recursive DNS Server Option (as per RFC 6106) to\ncopy a defined maximum number of DNS servers to the DNS module.\nSet this option to a number of desired DNS servers advertised in the RA protocol.\nThis feature is disabled when set to 0.",
-                                "id": "LWIP_IPV6_RDNSS_MAX_DNS_SERVERS",
-                                "name": "LWIP_IPV6_RDNSS_MAX_DNS_SERVERS",
-                                "range": null,
-                                "title": "Use IPv6 Router Advertisement Recursive DNS Server Option",
-                                "type": "int"
                             }
                         ],
                         "depends_on": null,
@@ -15922,6 +15923,26 @@
                         "name": "LWIP_IPV6",
                         "range": null,
                         "title": "Enable IPv6",
+                        "type": "bool"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "LWIP_IPV6_AUTOCONFIG",
+                        "help": "Use IPv6 Router Advertisement Recursive DNS Server Option (as per RFC 6106) to\ncopy a defined maximum number of DNS servers to the DNS module.\nSet this option to a number of desired DNS servers advertised in the RA protocol.\nThis feature is disabled when set to 0.",
+                        "id": "LWIP_IPV6_RDNSS_MAX_DNS_SERVERS",
+                        "name": "LWIP_IPV6_RDNSS_MAX_DNS_SERVERS",
+                        "range": null,
+                        "title": "Use IPv6 Router Advertisement Recursive DNS Server Option",
+                        "type": "int"
+                    },
+                    {
+                        "children": [],
+                        "depends_on": "LWIP_IPV6_AUTOCONFIG",
+                        "help": "Enable DHCPv6 for IPv6 stateless address autoconfiguration.\nNote that the dhcpv6 client has to be started using dhcp6_enable_stateless(netif);\nNote that the stateful address autoconfiguration is not supported.",
+                        "id": "LWIP_IPV6_DHCP6",
+                        "name": "LWIP_IPV6_DHCP6",
+                        "range": null,
+                        "title": "Enable DHCPv6 stateless address autoconfiguration",
                         "type": "bool"
                     },
                     {
@@ -18909,6 +18930,16 @@
                                 "range": null,
                                 "title": "Build esp_openthread libraries from source",
                                 "type": "bool"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": "OPENTHREAD_ENABLED",
+                                "help": null,
+                                "id": "OPENTHREAD_NUM_MESSAGE_BUFFERS",
+                                "name": "OPENTHREAD_NUM_MESSAGE_BUFFERS",
+                                "range": null,
+                                "title": "The number of openthread message buffers",
+                                "type": "int"
                             }
                         ],
                         "depends_on": null,
@@ -19293,6 +19324,16 @@
                                 "name": "SPI_FLASH_SUPPORT_BOYA_CHIP",
                                 "range": null,
                                 "title": "BOYA",
+                                "type": "bool"
+                            },
+                            {
+                                "children": [],
+                                "depends_on": "IDF_TARGET_ESP32S3",
+                                "help": "Enable this to support auto detection of Octal MXIC chips if chip vendor not directly\ngiven by ``chip_drv`` member of the chip struct. This adds support for variant\nchips, however will extend detecting time.",
+                                "id": "SPI_FLASH_SUPPORT_MXIC_OPI_CHIP",
+                                "name": "SPI_FLASH_SUPPORT_MXIC_OPI_CHIP",
+                                "range": null,
+                                "title": "mxic (opi)",
                                 "type": "bool"
                             }
                         ],

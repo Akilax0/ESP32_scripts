@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/akilax0/Documents/e17-3yp-Landmine-Detector/hardware/ESP32_test_scripts/scratch/blinker/build/esp-idf/esp_system/port/cmake_install.cmake")
+  include("/home/akilax0/Documents/ESP32_scripts/scratch/blinker/build/esp-idf/esp_system/port/cmake_install.cmake")
 
 endif()
 
