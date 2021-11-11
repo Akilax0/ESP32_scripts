@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/CMakeFiles/bootloader
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/CMakeFiles/bootloader.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/CMakeFiles/bootloader-complete.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/akilax0/Documents/ESP32_scripts/VSCESP32/blink/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
