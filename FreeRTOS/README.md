@@ -60,7 +60,67 @@ Read ESP32 IDF to SMP changes page after FreeRTOS
 
 ##Blink Program
 
+Task is a function that simply gets called during setup or from another task.
 
+Have to tell schedular to proritize and time slize appropriately.
+
+vTaskDelay() -> non blocking function 
+tells the schedular to run other tasks until specified time is up.
+
+Tick Timer -> hardware timers allocated to interrupt the proccessor at a specific interval. Interval -> TICK
+Schedular opportunity to run each tick to figure out which task to run at each tick.
+Tick period = 1ms (default)
+function accepts number of ticks
+
+xTaskCreatePinToCore we want to run task on one core
+not in vanilla freertos 
+xTaskCreate
+can call in esp as well but runs in either core.
+
+
+xTaskCreatePinToCore{
+	functioncalled - toggleLED,
+	Name of Task - "String",
+	stack size in bytes (number of words in vanilla) - [1024],
+	pointer to memory,
+	task prority - 0 to Max_priority-1(24),
+	task handle - manage task from other task or main loop (can check status or end it)
+	cpu core - 1 [not in vanilla]
+}
+
+In vanila have to call vTaskStartScheduler() after assigning tasks. Here already called in setup function.
+
+
+##Task Scheduling
+
+
+What actually happens 
+
+Time is divided into ticks. At the begining of a tick task scheduler runs and looks for tasks to run. 
+Runs the highest priority task for rest of the tick. 
+On next tick scheduler runs again to chekc the tasks.
+On vtaskDelay if no other task is available to run core remains in an idle state.
+If two tasks with same priority is available both are run in a round robin fashion until tasks are over. 
+Known as preemptive scheduling.
+
+All this is related to software but if hardware interrupt occurs it has the highest priority and the current task pause exectures ISR then continues for the rest of the tick.
+
+As an advanced option can opt to run tasks with same priority on the two cores simultanously. Bit complicated but can be done.
+
+-----------Task States------------
+
+After task creation ready to run.
+Task can be in between ready and running states.
+If a delay is given to a task it becomes blocked where the taskremains until event occures(timeout).
+
+Alternatively can use 
+	-vTaskSuspend()
+	-vTaskResume()
+
+Useful to suspend task without a specified time delay.
+
+
+Context switching <--check on freeRTOS documentation
 
 
 
