@@ -98,8 +98,8 @@ What actually happens
 
 Time is divided into ticks. At the begining of a tick task scheduler runs and looks for tasks to run. 
 Runs the highest priority task for rest of the tick. 
-On next tick scheduler runs again to chekc the tasks.
-On vtaskDelay if no other task is available to run core remains in an idle state.
+On next tick scheduler runs again to check the tasks.
+On vtaskDelay() if no other task is available to run core remains in an idle state.
 If two tasks with same priority is available both are run in a round robin fashion until tasks are over. 
 Known as preemptive scheduling.
 
@@ -112,6 +112,8 @@ As an advanced option can opt to run tasks with same priority on the two cores s
 After task creation ready to run.
 Task can be in between ready and running states.
 If a delay is given to a task it becomes blocked where the taskremains until event occures(timeout).
+[Done by calling API]
+
 
 Alternatively can use 
 	-vTaskSuspend()
@@ -122,5 +124,28 @@ Useful to suspend task without a specified time delay.
 
 Context switching <--check on freeRTOS documentation
 
+
+##Memory Management
+
+RAM 
+  - STATIC Static allocation (global/static variable)
+  - STACK automatic allocation (grows down) local variables
+  - HEAP grows towards the stack (dynamic alloacation where the programmer explicitly asks for memory) malloc / calloc in C/C++ have to free this or could cause memory leaks.
+
+
+--------------------Memory at runtime RTOS----------------------------------
+
+At xTaskCreate heap portion is alloacted to the task.
+Divides into two
+ - Stack - we assign stack size on creation (min 700 for base info) 
+ - TCB - critical info about the task (stack mem location , task priority)
+
+kernel objects also in heap. queues and semifores
+
+[https://happilyembedded.wordpress.com/2015/10/23/rtos-conecpts-kernel-objects/]
+
+In newer versions possible to store static data for a task/kernel objcet
+
+ - '#define configSUPPORT_STATIC_ALLOCATION 1'
 
 
