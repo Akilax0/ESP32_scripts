@@ -127,10 +127,13 @@ Context switching <--check on freeRTOS documentation
 
 ##Memory Management
 
+Compiler knows how much memory should be allocated at the befining of a program
+
+
 RAM 
   - STATIC Static allocation (global/static variable)
   - STACK automatic allocation (grows down) local variables
-  - HEAP grows towards the stack (dynamic alloacation where the programmer explicitly asks for memory) malloc / calloc in C/C++ have to free this or could cause memory leaks.
+  - HEAP grows towards the stack (dynamic allocation where the programmer explicitly asks for memory) malloc / calloc in C/C++ have to free this or could cause memory leaks.
 
 
 --------------------Memory at runtime RTOS----------------------------------
@@ -138,14 +141,27 @@ RAM
 At xTaskCreate heap portion is alloacted to the task.
 Divides into two
  - Stack - we assign stack size on creation (min 700 for base info) 
- - TCB - critical info about the task (stack mem location , task priority)
+ - TCB - struct that keeps critical info about the task (stack mem location , task priority)
 
-kernel objects also in heap. queues and semifores
+kernel objects also in heap. queues and semaphores
 
 [https://happilyembedded.wordpress.com/2015/10/23/rtos-conecpts-kernel-objects/]
 
 In newer versions possible to store static data for a task/kernel objcet
 
  - '#define configSUPPORT_STATIC_ALLOCATION 1'
+
+dynamic allocate tries to find the largest unallocated heap.
+If constantly allocates could end up fragmentting the heap.
+Hence FreeRTOS gives memory allocation schemes.
+
+[https://freertos.org/a00111.html]
+
+
+On ESP has couple of different RAM hence not the same as vanilla FreeRTOS.
+[https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/mem_alloc.html?highlight=memory]
+
+
+
 
 
