@@ -157,11 +157,42 @@ Hence FreeRTOS gives memory allocation schemes.
 
 [https://freertos.org/a00111.html]
 
-
 On ESP has couple of different RAM hence not the same as vanilla FreeRTOS.
 [https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/mem_alloc.html?highlight=memory]
 
 
+## Queue
+
+Can use global variables to pass between functions
+
+Task A update Global variable 
+Task B read Global variable
+
+but what happens when another task wants to change the value ?
+
+Esp32 32 bit wide little endian
+if 64 bit 
+	Have to use 2 locations
+
+	but here if above happens when updating the second part of the data the data gets corrupted.Not thread safe.
+
+Or data gets  written to the same location at the same time
+
+Can be solved using atomic actions
+or use kernel obejects to tell other tasks to not to mess with our data.
+
+
+Queue - allows data to be sent between takss uninteruptedly
+
+
+Writing to a queue is atomic
+added by value not reference.
+
+reading removes data from queue 
+can also specify a timeout if queue empty 
+and if full
+
+Queue Management[https://freertos.org/a00018.html]
 
 
 
