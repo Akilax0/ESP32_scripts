@@ -80,5 +80,8 @@ void loop() {
     //Generally seraial input output handled by one task
     num ++;
 
-    vTaskDelay(1000/ portTICK_PERIOD_MS);
+    //No issue while 1s delay read write happen simultanously
+    //vTaskDelay(1000/ portTICK_PERIOD_MS);
+    //500ms would disrupt this queue would fill up quickly
+    vTaskDelay(500/ portTICK_PERIOD_MS);
 }

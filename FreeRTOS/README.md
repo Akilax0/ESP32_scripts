@@ -1,10 +1,11 @@
 
-INTRODUCTION
+# INTRODUCTION
 
 
 General Purpose Operating System
     Software that runs on a machine(microcontrollers & controllers) to handle various functions
-         1) Task scheduling -> OS figure out how slices of time is given to each task
+         
+		 1) Task scheduling -> OS figure out how slices of time is given to each task
          2) Resource Management -> How files are accessed for each task
          3) Device Drivers->
 
@@ -58,7 +59,7 @@ Read ESP32 IDF to SMP changes page after FreeRTOS
 
 
 
-##Blink Program
+## Blink Program
 
 Task is a function that simply gets called during setup or from another task.
 
@@ -78,20 +79,20 @@ xTaskCreate
 can call in esp as well but runs in either core.
 
 
-xTaskCreatePinToCore{
-	functioncalled - toggleLED,
-	Name of Task - "String",
-	stack size in bytes (number of words in vanilla) - [1024],
-	pointer to memory,
-	task prority - 0 to Max_priority-1(24),
-	task handle - manage task from other task or main loop (can check status or end it)
-	cpu core - 1 [not in vanilla]
-}
+	xTaskCreatePinToCore{
+		functioncalled - toggleLED,
+		Name of Task - "String",
+		stack size in bytes (number of words in vanilla) - [1024],
+		pointer to memory,
+		task prority - 0 to Max_priority-1(24),
+		task handle - manage task from other task or main loop (can check status or end it)
+		cpu core - 1 [not in vanilla]
+	}
 
 In vanila have to call vTaskStartScheduler() after assigning tasks. Here already called in setup function.
 
 
-##Task Scheduling
+## Task Scheduling
 
 
 What actually happens 
@@ -194,5 +195,76 @@ and if full
 
 Queue Management[https://freertos.org/a00018.html]
 
+
+## Mutex
+
+Race Conditions - two or more tasks with common variable.
+
+
+	int global_var =0;
+
+	void incTask(void* parameters){
+		while(1){
+			global_var++;
+		}
+	}
+
+	void main(){
+		startTask1(incTask, "Task 1");
+		startTask2(incTask, "Task 2");
+		sleep();
+	}
+
+Starts both tasks in main. 
+Race competitions happens when one task interrupts the other.
+
+From the example can see that sometimes the same number repeats as a result of a race condition.
+
+	local_var = shared_var;
+	local_var++;
+	vTaskDelay(random(100,500)/portTICK_PERIOD_MS);
+	shared_var = local_var;
+
+is known as a <b>Critical Section</b>. Must be executed by a task in its entirty before being executed by another task.
+--> <b>Mutual Exclusion</b>.
+
+### Protecting Shared Resources and Synchronizing Threads
+ 
+- Queue : pass messages(data) between threads
+- Lock : allows only one thread to enter the "locked" section of code.
+- Mutex : Like a lock but system wide(shared by multiple processes)
+- Semaphore: allows multiple threads to enter a critical section of code.
+
+MUTEX is a shared value between tasks(threads) and can be represented as a boolean value. Check mutex for variable availablity. This checking function has to be atomic.
+
+In some processor architectures
+<b>test  & set</b> ins in assembly to do this in one cycle is available.
+
+Once the mutex is set to 0 and considered unavailable a second task seeing this will wait or yield to do another task and return back.
+
+Semaphores and mutex implemented in the same way in RTOS 
+FreeRTOS makes this efficient by implementing the same way
+
+## Semaphores
+
+Allows multiple threads to a critical section.
+Better use is to use as a signalling mechanism to other tasks that a common resource is available.
+
+Has an int value.
+Checks semaphore greater than 0 and decrement on take.
+after task call semaphoreGive.
+
+But this causes a problem. Cannot manage multiple threads when given access to at the same time.
+
+
+Can be used to keep track of shared memory (buffer, linked list). If access to resource not atomic might have to add mutex as well.
+
+The value producers keeps giving semaphores (inc) limited by maximum value of resource and Consumers takes data(dec) Until above 0.
+
+
+|Mutex                | Semaphore        |
+|---------------------|------------------|
+| Ownership           | Does not         |
+| Priority inheritance|Good for ISR      |
 
 
