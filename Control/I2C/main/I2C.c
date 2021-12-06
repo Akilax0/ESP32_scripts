@@ -13,7 +13,7 @@
 //I2C master configuration
 #define I2C_MASTER_SDA_IO 21 
 #define I2C_MASTER_SCL_IO 22
-#define I2C_MASTER_FREQ_HZ 100000
+#define I2C_MASTER_FREQ_HZ 400000
 
 #define I2C_MASTER_TX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
@@ -24,7 +24,7 @@
 
 
 #define I2C_MASTER_NUM 0 /*!< I2C port number for master dev */
-#define ESP_SLAVE_ADDR 0x68 
+#define ESP_SLAVE_ADDR 0x09 
 #define WRITE_BIT I2C_MASTER_WRITE
 
 #define ACK_CHECK_EN 0x1
@@ -117,8 +117,11 @@ void app_main(void)
 	if(ret != ESP_OK){
 
 		printf("\n\n******************************\n\n");
-		printf("%d\n\n",ret);
+		printf("%s\n\n",esp_err_to_name(ret));
+	}else{
+		printf("\n\n*************************** I2C SENT *********************************** \n\n");
 	}
+
 
 	for (int i = 10; i >= 0; i--) {
 		printf("Restarting in %d seconds...\n", i);
