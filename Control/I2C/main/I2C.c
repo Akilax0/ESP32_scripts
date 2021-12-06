@@ -8,19 +8,30 @@
 #include "driver/gpio.h"
 #include "driver/i2c.h"
 
-
 #define BLINK_GPIO 2
 
 //I2C master configuration
 #define I2C_MASTER_SDA_IO 21 
 #define I2C_MASTER_SCL_IO 22
-#define I2C_MASTER_FREQ_HZ
+#define I2C_MASTER_FREQ_HZ 100000
 
 #define I2C_MASTER_TX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
 #define I2C_MASTER_RX_BUF_DISABLE 0                           /*!< I2C master doesn't need buffer */
 
+#define DATA_LENGTH 512                  /*!< Data buffer length of test buffer */
+#define RW_TEST_LENGTH 128               /*!< Data length for r/w test, [0,DATA_LENGTH] */
+#define DELAY_TIME_BETWEEN_ITEMS_MS 1000 /*!< delay time between different test items */
+
+
+#define I2C_MASTER_NUM 0 /*!< I2C port number for master dev */
+#define ESP_SLAVE_ADDR 0x68 
+#define WRITE_BIT I2C_MASTER_WRITE
+
+#define ACK_CHECK_EN 0x1
+
+
 static esp_err_t i2c_master_init(void){
-	int i2c_master_port = 0;
+	int i2c_master_port = I2C_MASTER_NUM;
 	i2c_config_t conf = {
 		.mode = I2C_MODE_MASTER,
 		.sda_io_num = I2C_MASTER_SDA_IO,
@@ -30,7 +41,6 @@ static esp_err_t i2c_master_init(void){
 		.master.clk_speed = I2C_MASTER_FREQ_HZ,
 	};
 
-
     esp_err_t err = i2c_param_config(i2c_master_port, &conf);
     if (err != ESP_OK) {
         return err;
@@ -38,6 +48,20 @@ static esp_err_t i2c_master_init(void){
     return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
 
+static esp_err_t __attribute__((unused)) i2c_master_write_slave(i2c_port_t i2c_num, uint8_t *data_wr, size_t size){
+
+/*I2C_MASTER_NUM, data_wr, RW_TEST_LENGTH*/
+
+	i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+	i2c_master_start(cmd);
+
+	i2c_master_write_byte(cmd, (ESP_SLAVE_ADDR << 1) | WRITE_BIT, ACK_CHECK_EN);
+	i2c_master_write(cmd, data_wr, size, ACK_CHECK_EN);
+	i2c_master_stop(cmd);
+	esp_err_t ret = i2c_master_cmd_begin(i2c_num, cmd, 1000/ portTICK_RATE_MS);
+	i2c_cmd_link_delete(cmd);
+	return ret;
+}
 
 void app_main(void)
 {
@@ -58,8 +82,6 @@ void app_main(void)
 			(chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
 
 	printf("Minimum free heap size: %d bytes\n", esp_get_minimum_free_heap_size());
-
-
 
 	printf("blinking LED \n");
 
@@ -82,7 +104,21 @@ void app_main(void)
 //I2C Communication
 
 	ESP_ERROR_CHECK(i2c_master_init());
+	/*ESP_ERROR_CHECK(send_msg());*/
 
+	uint8_t *data_wr = (uint8_t *)malloc(DATA_LENGTH);
+
+	int i;
+        for (i = 0; i < DATA_LENGTH; i++) {
+            data_wr[i] = i + 10;
+        }
+        esp_err_t ret = i2c_master_write_slave(I2C_MASTER_NUM, data_wr, RW_TEST_LENGTH);
+
+	if(ret != ESP_OK){
+
+		printf("\n\n******************************\n\n");
+		printf("%d\n\n",ret);
+	}
 
 	for (int i = 10; i >= 0; i--) {
 		printf("Restarting in %d seconds...\n", i);
