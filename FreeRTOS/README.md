@@ -252,7 +252,7 @@ Better use is to use as a signalling mechanism to other tasks that a common reso
 
 Has an int value.
 Checks semaphore greater than 0 and decrement on take.
-after task call semaphoreGive.
+after task call semaphore Give.
 
 But this causes a problem. Cannot manage multiple threads when given access to at the same time.
 
@@ -261,10 +261,14 @@ Can be used to keep track of shared memory (buffer, linked list). If access to r
 
 The value producers keeps giving semaphores (inc) limited by maximum value of resource and Consumers takes data(dec) Until above 0.
 
+Semaphores should be replaced by queue as much as possible.
 
 |Mutex                | Semaphore        |
 |---------------------|------------------|
 | Ownership           | Does not         |
 | Priority inheritance|Good for ISR      |
+
+
+
 
 
