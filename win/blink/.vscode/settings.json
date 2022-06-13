@@ -1,0 +1,8 @@
+{
+  "C_Cpp.intelliSenseEngine": "Tag Parser",
+  "files.associations": {
+    "led_strip.h": "c"
+  },
+  "idf.portWin": "COM5",
+  "idf.flashType": "UART"
+}
